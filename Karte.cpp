@@ -7,7 +7,7 @@ using namespace std;
 
 
 //http://www.cplusplus.com/reference/random/uniform_int_distribution/
-//mehr doc adden
+//Die Zufallszahlen werden mit std::random und der Systemzeit berechnet.
 int Karte::zufallsZahlZwischen(int x, int y) {
 	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
 	default_random_engine gen(seed);

@@ -41,7 +41,8 @@ public:
 		zeichen = z;
 		verdeckt = v;
 	}
-	//Zum Ausgeben in der Konsole verwendet
+	//Zum Ausgeben in der Konsole verwendet, wenn die Karte verdeckt
+	//ist, werden Fragezeichen zurückgegeben.
 	string getFarbe() { if (verdeckt) { return "?????"; } else return farbe; }
 	string getZeichen() { if (verdeckt) { return "??????"; } else return zeichen; }
 };

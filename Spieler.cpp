@@ -2,7 +2,12 @@
 #include "Karte.h"
 #include <iostream>
 
+//Gibt dem Spieler 2 zufällige Karten (1 verdeckt beim Dealer); over21 speichert, ob der Spieler über 21 Punkte hat,
+//da er dann automatisch sofort verloren hat. Da startHand nur beim Anfang einer neuen Runde aufgerufen wird,
+//kann man over21 hier zurücksetzen:
 inline void Spieler::startHand() {
+	over21 = false;
+	over21Split = false;
 	hand.clear();
 	if (isHuman) {
 		Karte k1 = Karte();
@@ -18,11 +23,17 @@ inline void Spieler::startHand() {
 	}
 }
 
+//Zieht eine Karte und nimmt sie auf die Hand (unverdeckt)
 inline void Spieler::drawCard() {
 	Karte k = Karte();
 	hand.push_back(k);
 }
-
+//Macht dasselbe für die zweite Hand
+inline void Spieler::drawSplitCard() {
+	Karte k = Karte();
+	splitHand.push_back(k);
+}
+//deckt alle Karten in einer hand auf.
 inline void Spieler::handAufdecken() {
 	for (int i = 0; i < hand.size(); i++) {
 		hand.at(i).verdeckt = false;
@@ -30,11 +41,12 @@ inline void Spieler::handAufdecken() {
 	}
 }
 
-inline int Spieler::getPunkte() {
+//Zählt die Punkte auf einer gegebenen Hand zusammen, mit Rücksicht auf die Ass = (11 oder 1) Regel
+inline int Spieler::getPunkte(vector<Karte> h) {
 	int total = 0;
 	int aces = 0;
-	for (int i = 0; i < hand.size(); i++) {
-		string z = hand.at(i).getZeichen();
+	for (int i = 0; i < h.size(); i++) {
+		string z = h.at(i).getZeichen();
 		if (z == "Zwei  ") { total += 2; }
 		else if (z == "Drei  ") { total += 3; }
 		else if (z == "Vier  ") { total += 4; }
@@ -50,8 +62,8 @@ inline int Spieler::getPunkte() {
 		else if (z == "Ass   ") { total += 11; aces++; }
 	}
 	if (total > 21 && aces > 0) {
-		for (int i = 0; i < hand.size(); i++) {
-			if (hand.at(i).getZeichen() == "Ass   ") {
+		for (int i = 0; i < h.size(); i++) {
+			if (h.at(i).getZeichen() == "Ass   ") {
 				total -= 11;
 				total += 1;
 			}

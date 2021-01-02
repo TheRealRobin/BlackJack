@@ -6,24 +6,32 @@
 class Spieler
 {
 public:
-	//Menschliche Spieler sollen am Anfang ihren Namen wählen können
-	string name;
-	//Verbleibendes Geld im Geldbeutel/zur Verfügung
+	//Verbleibendes Geld im Geldbeutel/ Wettgeld
 	int geldchips;
+	int bet_amount = 0;
+	//Wird true wenn das Spiel verlassen wird
+	bool quitsQame;
+	//Wird true wenn der Spieler überkauft hat (Mehr als 21 Punkte)
+	bool over21 = false;
+	bool over21Split = false;
 	//Liste der Karten auf der Hand
 	vector<Karte> hand;
+	//Wird nur beim spielzug Split verwendet. Speichert die zweite Hand
+	vector<Karte> splitHand;
+	bool hasSplitHand;
 	//Wenn false, dann ist der Spieler computergesteuert / der Casinodealer
 	bool isHuman;
 	//Zieht zwei Karten, eine verdeckt ist der Spieler not human
 	void startHand();
 	//Zieht eine Karte
 	void drawCard();
+	void drawSplitCard();
 	//Gibt die hand zurück
 	vector<Karte> getHand() {return hand;}
 	//Deckt die Hand auf
 	void handAufdecken();
 	//Hand zusammenzählen
-	int getPunkte();
+	int getPunkte(vector<Karte> h);
 	//Startparameter für Spieler
 	Spieler(bool human) {
 		geldchips = 1000;
