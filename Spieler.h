@@ -17,9 +17,10 @@ public:
 	//Liste der Karten auf der Hand
 	vector<Karte> hand;
 	//Wird nur beim spielzug Split verwendet. Speichert die zweite Hand
+	//hasSplitHand ist true, wenn die zweite Hand bei der Punkteberechnung berücksichtigt werden soll.
 	vector<Karte> splitHand;
 	bool hasSplitHand;
-	//Wenn false, dann ist der Spieler computergesteuert / der Casinodealer
+	//Wenn false, dann ist der Spieler computergesteuert / der Casinodealer und agiert dementsprechend
 	bool isHuman;
 	//Zieht zwei Karten, eine verdeckt ist der Spieler not human
 	void startHand();
@@ -32,13 +33,13 @@ public:
 	void handAufdecken();
 	//Hand zusammenzählen
 	int getPunkte(vector<Karte> h);
-	//Die letzten Gewinne/verluste des Spielers
+	//Die letzten Gewinne/verluste des Spielers und der Rundenzähler
 	vector<vector<int>> winHistory;
 	int runde;
 	//Startparameter für Spieler
 	Spieler(bool human) {
-		geldchips = 1000;
-		isHuman = human;
-		runde = 1;
+		geldchips = 1000; //Startchips
+		isHuman = human; 
+		runde = 1; //Damit der Rundenzähler nicht bei 0 anfängt
 	}
 };

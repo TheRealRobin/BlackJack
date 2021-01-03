@@ -18,7 +18,7 @@ inline void Spieler::startHand() {
 	} 
 	else {
 		Karte k1 = Karte();
-		Karte k2 = Karte(true);
+		Karte k2 = Karte(true); //verdeckte  Karte
 		hand.push_back(k1);
 		hand.push_back(k2);
 	}
@@ -45,7 +45,7 @@ inline void Spieler::handAufdecken() {
 //Zählt die Punkte auf einer gegebenen Hand zusammen, mit Rücksicht auf die Ass = (11 oder 1) Regel
 inline int Spieler::getPunkte(vector<Karte> h) {
 	int total = 0;
-	int aces = 0;
+	int aces = 0; //Zählt die Asse, um später möglciherweise die Punktzahl anzupassen
 	for (int i = 0; i < h.size(); i++) {
 		string z = h.at(i).getZeichen();
 		if (z == "Zwei  ") { total += 2; }
@@ -62,7 +62,7 @@ inline int Spieler::getPunkte(vector<Karte> h) {
 		else if (z == "Koenig") { total += 10; }
 		else if (z == "Ass   ") { total += 11; aces++; }
 	}
-	if (total > 21 && aces > 0) {
+	if (total > 21 && aces > 0) { //Prüft, ob Anzahl angepasst werden muss, manche Asse müssen als 1 gezählt werden
 		for (int i = 0; i < h.size(); i++) {
 			if (h.at(i).getZeichen() == "Ass   ") {
 				total -= 11;

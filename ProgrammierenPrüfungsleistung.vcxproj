@@ -142,7 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Karte.cpp" />
-    <ClCompile Include="ProgrammierenPrüfungsleistung.cpp" />
+    <ClCompile Include="BlackJack.cpp" />
     <ClCompile Include="Spieler.cpp" />
   </ItemGroup>
   <ItemGroup>
