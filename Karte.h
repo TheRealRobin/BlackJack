@@ -35,7 +35,7 @@ public:
 		zeichen = z;
 		verdeckt = v;
 	}
-	//nur zum testen der punkteberechnung gedacht
+	//nur zum testen der punkteberechnung / splits gedacht
 	Karte(string f, string z, bool v) {
 		farbe = f;
 		zeichen = z;

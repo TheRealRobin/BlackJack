@@ -27,14 +27,18 @@ public:
 	void drawCard();
 	void drawSplitCard();
 	//Gibt die hand zurück
-	vector<Karte> getHand() {return hand;}
+	vector<Karte> getHand() { return hand; }
 	//Deckt die Hand auf
 	void handAufdecken();
 	//Hand zusammenzählen
 	int getPunkte(vector<Karte> h);
+	//Die letzten Gewinne/verluste des Spielers
+	vector<vector<int>> winHistory;
+	int runde;
 	//Startparameter für Spieler
 	Spieler(bool human) {
 		geldchips = 1000;
 		isHuman = human;
+		runde = 1;
 	}
 };

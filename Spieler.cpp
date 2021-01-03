@@ -8,6 +8,7 @@
 inline void Spieler::startHand() {
 	over21 = false;
 	over21Split = false;
+	hasSplitHand = false;
 	hand.clear();
 	if (isHuman) {
 		Karte k1 = Karte();
