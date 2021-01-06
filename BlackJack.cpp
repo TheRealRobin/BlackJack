@@ -63,7 +63,7 @@ PlayerMove askForNextMove() {
 			redo = true;
 			cin.clear();
 			cin.ignore(10000, '\n');
-		} //Ignoriert ungültigen Input, soetwas tuach auch weiter unten nochmal auf
+		} //Ignoriert ungültigen Input, soetwas taucht auch weiter unten nochmal auf
 	} while (redo);
 	//d DRAW f DRAWSPLIT h HOLD s SPLIT x DOUBLEDOWN q SURRENDER v VIEWHIST
 	//DRAW soll eine Karte in die Hand (1) ziehen.
@@ -347,11 +347,11 @@ void determineResult(Spieler& s, Spieler& c) {
 int main() {
 	bool run = true; //Beendet Programm wenn false
 	GameState state = INIT; //GameState ist in der Dokumentation ausführlich erläutert
-	Spieler s = Spieler(true); //Spieler und Computergegner werden initialisiert
+	Spieler s = Spieler(true); //Spieler und Computergegner (Dealer) werden initialisiert
 	Spieler c = Spieler(false);
 	drawScreen(state, s, c); //Resettet Output und schreibt passenden Text
 	while (run) {
-		//BET Spieler setzt Geldchips (Minimaleinsatz?)
+		//BET Spieler setzt Geldchips
 		state = BET;
 		drawScreen(state, s, c);
 		s.bet_amount = askForBetAmount(s);

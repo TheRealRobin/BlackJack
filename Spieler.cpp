@@ -34,7 +34,7 @@ inline void Spieler::drawSplitCard() {
 	Karte k = Karte();
 	splitHand.push_back(k);
 }
-//deckt alle Karten in einer hand auf.
+//deckt alle Karten in einer Hand auf.
 inline void Spieler::handAufdecken() {
 	for (int i = 0; i < hand.size(); i++) {
 		hand.at(i).verdeckt = false;
@@ -45,7 +45,7 @@ inline void Spieler::handAufdecken() {
 //Zählt die Punkte auf einer gegebenen Hand zusammen, mit Rücksicht auf die Ass = (11 oder 1) Regel
 inline int Spieler::getPunkte(vector<Karte> h) {
 	int total = 0;
-	int aces = 0; //Zählt die Asse, um später möglciherweise die Punktzahl anzupassen
+	int aces = 0; //Zählt die Asse, um später möglicherweise die Punktzahl anzupassen
 	for (int i = 0; i < h.size(); i++) {
 		string z = h.at(i).getZeichen();
 		if (z == "Zwei  ") { total += 2; }

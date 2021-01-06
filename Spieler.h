@@ -20,20 +20,20 @@ public:
 	//hasSplitHand ist true, wenn die zweite Hand bei der Punkteberechnung berücksichtigt werden soll.
 	vector<Karte> splitHand;
 	bool hasSplitHand;
-	//Wenn false, dann ist der Spieler computergesteuert / der Casinodealer und agiert dementsprechend
+	//Wenn false, dann ist der Spieler computergesteuert (der Casinodealer) und agiert dementsprechend
 	bool isHuman;
-	//Zieht zwei Karten, eine verdeckt ist der Spieler not human
+	//Zieht zwei Karten, eine verdecktm, wenn der Spieler not human ist
 	void startHand();
 	//Zieht eine Karte
 	void drawCard();
 	void drawSplitCard();
-	//Gibt die hand zurück
+	//Gibt die Hand zurück
 	vector<Karte> getHand() { return hand; }
 	//Deckt die Hand auf
 	void handAufdecken();
 	//Hand zusammenzählen
 	int getPunkte(vector<Karte> h);
-	//Die letzten Gewinne/verluste des Spielers und der Rundenzähler
+	//Die letzten Gewinne/Verluste des Spielers und der Rundenzähler
 	vector<vector<int>> winHistory;
 	int runde;
 	//Startparameter für Spieler
