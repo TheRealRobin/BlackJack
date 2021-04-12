@@ -8,10 +8,10 @@ using namespace std;
 
 //GameState ist f�r den main-loop/drawScreen zur Auswahl der n�chsten Schritte gedacht
 //Wird in der Dokumentation weiter ausgef�hrt
-enum GameState {INIT, BET, DEAL, NEXTMOVE, PAYOUT, QUIT};
+const enum GameState {INIT, BET, DEAL, NEXTMOVE, PAYOUT, QUIT};
 //Die m�glichen Spielz�ge eines menschlichen Spielers
 //Wird auch in der Dokumentation weiter ausgef�hrt
-enum PlayerMove {DRAW, DRAWSPLIT, HOLD, SPLIT, DOUBLEDOWN, SURRENDER, VIEWHIST};
+const enum PlayerMove {DRAW, DRAWSPLIT, HOLD, SPLIT, DOUBLEDOWN, SURRENDER, VIEWHIST};
 
 //Der minimale Wetteinsatz, kann nach belieben ge�ndert werden, Spiel passt sich an
 const int minBet = 25;
