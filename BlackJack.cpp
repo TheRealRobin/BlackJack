@@ -6,19 +6,19 @@
 
 using namespace std;
 
-//GameState ist für den main-loop/drawScreen zur Auswahl der nächsten Schritte gedacht
-//Wird in der Dokumentation weiter ausgeführt
+//GameState ist fÃ¼r den main-loop/drawScreen zur Auswahl der nÃ¤chsten Schritte gedacht
+//Wird in der Dokumentation weiter ausgefÃ¼hrt
 const enum GameState {INIT, BET, DEAL, NEXTMOVE, PAYOUT, QUIT};
-//Die möglichen Spielzüge eines menschlichen Spielers
-//Wird auch in der Dokumentation weiter ausgeführt
+//Die mÃ¶glichen SpielzÃ¼ge eines menschlichen Spielers
+//Wird auch in der Dokumentation weiter ausgefÃ¼hrt
 const enum PlayerMove {DRAW, DRAWSPLIT, HOLD, SPLIT, DOUBLEDOWN, SURRENDER, VIEWHIST};
 
-//Der minimale Wetteinsatz, kann nach belieben geändert werden, Spiel passt sich an
+//Der minimale Wetteinsatz, kann nach belieben geÃ¤ndert werden, Spiel passt sich an
 const int minBet = 25;
 
 //Schreibt die Hand eines gegebenen Spielers in die Konsole
 void printHand(Spieler s) {
-	//Es müssen für unterschiedliche Spieler (Dealer, Spieler, Spieler mit Split)
+	//Es mÃ¼ssen fÃ¼r unterschiedliche Spieler (Dealer, Spieler, Spieler mit Split)
 	//Unterschiedliche Dinge ausgegeben werden
 	if (s.isHuman && !s.hasSplitHand) {
 		cout << "\nKarten (Spieler):" << "\n";
@@ -53,24 +53,24 @@ void printHand(Spieler s) {
 	}
 }
 
-//Entscheidet basierend auf userinput, was der menschliche Spieler als nächstes tun wird.
+//Entscheidet basierend auf userinput, was der menschliche Spieler als nÃ¤chstes tun wird.
 PlayerMove askForNextMove() {
 	bool redo = false;
-	char c = ' '; //d f h s x q v sind gültige chars
+	char c = ' '; //d f h s x q v sind gÃ¼ltige chars
 	do {
 		cout << "\n\nWas m\224chtest du tun?\nd -- Karte Ziehen\nf -- Karte Ziehen (Hand 2, nur bei Split)\nh -- Halten\ns -- Split(nur m\224glich bei doppelter Karte in Starthand; Deine beiden Karten werden nun als jeweils seprerate Hand gewertet, beide mit dem anf\204nglichen Einsatz.)\nx -- Verdoppeln (verdoppelt die Wette, zieht eine dritte Karte und beendet den Zug)\nv -- Letzte Gewinne / Verluste ansehen\nq -- Aufgeben (Beendet das Spiel)\n[d/f/h/s/x/q]:";
 		if (!(cin >> c) || !(c=='d'||c=='f'||c=='h'||c=='s'||c=='x'||c=='q'||c=='v')) {
 			redo = true;
 			cin.clear();
 			cin.ignore(10000, '\n');
-		} //Ignoriert ungültigen Input, soetwas taucht auch weiter unten nochmal auf
+		} //Ignoriert ungÃ¼ltigen Input, soetwas taucht auch weiter unten nochmal auf
 	} while (redo);
 	//d DRAW f DRAWSPLIT h HOLD s SPLIT x DOUBLEDOWN q SURRENDER v VIEWHIST
 	//DRAW soll eine Karte in die Hand (1) ziehen.
 	//DRAWSPLIT soll eine Karte in die Hand(2) ziehen.
 	//HOLD soll keine Karte ziehen und abwarten, was der Dealer macht.
-	//SPLIT soll, wenn möglich, die Hand des Spielers in zwei gesonderte Hände unterteilen, die seperat gespielt werden, um den maximalen Gewinn zu erhöhen.
-	//DOUBLEDOWN soll den Einsatz verdoppeln, eine Karte in die Hand(1) ziehen und den Zug beenden. (Bei Split nicht möglich)
+	//SPLIT soll, wenn mÃ¶glich, die Hand des Spielers in zwei gesonderte HÃ¤nde unterteilen, die seperat gespielt werden, um den maximalen Gewinn zu erhÃ¶hen.
+	//DOUBLEDOWN soll den Einsatz verdoppeln, eine Karte in die Hand(1) ziehen und den Zug beenden. (Bei Split nicht mÃ¶glich)
 	//SURRENDER soll das Spiel beenden.
 	//VIEWHIST soll die Gewinn/Verlust-Statistik der letzten Runde anzeigen
 	if (c == 'd') {
@@ -97,7 +97,7 @@ PlayerMove askForNextMove() {
 }
 
 //Schreibt basierend auf GameState verschiedene Dinge in die Konsole
-//drawScreen kümmert sich sozusagen um den Textoutput der 
+//drawScreen kÃ¼mmert sich sozusagen um den Textoutput der 
 void drawScreen(GameState state, Spieler s, Spieler c) {
 	system("cls"); //Screen clearen
 	switch (state) {
@@ -140,7 +140,7 @@ void drawScreen(GameState state, Spieler s, Spieler c) {
 	}
 }
 
-//Entscheidet basierend auf userinput, wie viel der Spieler einsetzt. Da das Geld als Chips zählt, ist die kleinste unterteilbare Einheit davon 1 (in anderen Worten, Chips sind ganzzahlig).
+//Entscheidet basierend auf userinput, wie viel der Spieler einsetzt. Da das Geld als Chips zÃ¤hlt, ist die kleinste unterteilbare Einheit davon 1 (in anderen Worten, Chips sind ganzzahlig).
 int askForBetAmount(Spieler s) {
 	int amount;
 	bool redo;
@@ -162,11 +162,11 @@ int askForBetAmount(Spieler s) {
 };
 
 //Hier soll der genaue Spieler aus main() verwendet werden, daher Spieler &s
-//Die einzelnen Spielzüge sind in der Dokumentation ausführlich beschrieben.
-//Ist außerdem für Textoutput, der die Spielzüge betrifft, verantwortlich.
+//Die einzelnen SpielzÃ¼ge sind in der Dokumentation ausfÃ¼hrlich beschrieben.
+//Ist auÃŸerdem fÃ¼r Textoutput, der die SpielzÃ¼ge betrifft, verantwortlich.
 bool doMove(Spieler &s, PlayerMove next) {
 	bool playerFinished = false; //Wenn true, ist der letzte Spielzug abgeschlossen und die PAYOUT-Phase beginnt
-	if (next == DRAW) {//Zieht eine Karte und prüft, ob überkauft wurde
+	if (next == DRAW) {//Zieht eine Karte und prÃ¼ft, ob Ã¼berkauft wurde
 		s.drawCard();
 		if (s.getPunkte(s.hand) > 21 && !s.hasSplitHand) { playerFinished = true; s.over21 = true; cout << "\nLeider \232berkauft!"; }
 		if (s.getPunkte(s.hand) > 21 && s.hasSplitHand) {
@@ -180,7 +180,7 @@ bool doMove(Spieler &s, PlayerMove next) {
 		}
 		Sleep(3000);
 	}
-	if (next == DRAWSPLIT) {//Macht das gleiche für Hand 2, falls Split aktiv ist.
+	if (next == DRAWSPLIT) {//Macht das gleiche fÃ¼r Hand 2, falls Split aktiv ist.
 		if (s.hasSplitHand && (s.getPunkte(s.splitHand) < 21)) {
 			s.drawSplitCard();
 			if (s.getPunkte(s.splitHand) > 21) {
@@ -257,12 +257,12 @@ bool doMove(Spieler &s, PlayerMove next) {
 	return playerFinished;
 }
 
-//Berechnet den Gewinn/Verlust für die Hand (und ggf. Split-hand) des Spielers
+//Berechnet den Gewinn/Verlust fÃ¼r die Hand (und ggf. Split-hand) des Spielers
 void determineResult(Spieler& s, Spieler& c) {
-	int spunkte = s.getPunkte(s.hand); //Zählt die Punkte von allen Händen und legt sie in _punkte ab
+	int spunkte = s.getPunkte(s.hand); //ZÃ¤hlt die Punkte von allen HÃ¤nden und legt sie in _punkte ab
 	int cpunkte = c.getPunkte(c.hand);
 	int splitpunkte = s.getPunkte(s.splitHand);
-	//Spieler Überkauft
+	//Spieler Ã¼berkauft
 	if (s.over21) {
 		cout << "\nVerloren. Du bekommst deinen Einsatz von " << s.bet_amount << " Chips nicht zur\201ck.";
 		s.geldchips -= s.bet_amount;
@@ -276,7 +276,7 @@ void determineResult(Spieler& s, Spieler& c) {
 		s.winHistory.push_back({ s.runde, (int)(s.bet_amount*1.5) });
 		Sleep(5000);
 	}
-	//Spieler unter 21 aber Dealer überkauft
+	//Spieler unter 21 aber Dealer Ã¼berkauft
 	else if (cpunkte > 21 && spunkte < 21) {
 		cout << "\nDu hast " << s.bet_amount << " Chips GEWONNEN! Du bekommst deinen Einsatz im Verh\204ltnis 1:1 zur\201ck.";
 		s.geldchips += s.bet_amount;
@@ -303,7 +303,7 @@ void determineResult(Spieler& s, Spieler& c) {
 		s.winHistory.push_back({ s.runde, -s.bet_amount });
 		Sleep(5000);
 	}
-	//Alle oberen nochmal, aber für die zweite Hand falls vorher gesplittet wurde.
+	//Alle oberen nochmal, aber fÃ¼r die zweite Hand falls vorher gesplittet wurde.
 	if (s.hasSplitHand) {
 		if (s.over21Split) {
 			cout << "\n(Split) Verloren. Du bekommst deinen Einsatz von " << s.bet_amount << " Chips nicht zur\201ck.";
@@ -346,7 +346,7 @@ void determineResult(Spieler& s, Spieler& c) {
 //Main-Loop / Einstiegspunkt
 int main() {
 	bool run = true; //Beendet Programm wenn false
-	GameState state = INIT; //GameState ist in der Dokumentation ausführlich erläutert
+	GameState state = INIT; //GameState ist in der Dokumentation ausfÃ¼hrlich erlÃ¤utert
 	Spieler s = Spieler(true); //Spieler und Computergegner (Dealer) werden initialisiert
 	Spieler c = Spieler(false);
 	drawScreen(state, s, c); //Resettet Output und schreibt passenden Text
@@ -361,14 +361,14 @@ int main() {
 		s.startHand(); //Beide bekommen ihre Anfangskarten
 		c.startHand();
 		drawScreen(state, s, c);
-		//NEXTMOVE entscheidet immer, welcher Spielzug ausgeführt werden soll, und führt ihn aus.
+		//NEXTMOVE entscheidet immer, welcher Spielzug ausgefÃ¼hrt werden soll, und fÃ¼hrt ihn aus.
 		
-		bool playerFinished = false; //Solange false wird immer ein weiterer Spielzug ausgeführt
+		bool playerFinished = false; //Solange false wird immer ein weiterer Spielzug ausgefÃ¼hrt
 		do {
 			state = NEXTMOVE;
 			drawScreen(state, s, c);
-			PlayerMove next = askForNextMove(); //holt sich den nächsten PlayerMove
-			playerFinished = doMove(s, next); //Führt ihn aus
+			PlayerMove next = askForNextMove(); //holt sich den nÃ¤chsten PlayerMove
+			playerFinished = doMove(s, next); //FÃ¼hrt ihn aus
 			if (s.quitsQame) { run = false; state = QUIT; }
 			drawScreen(state, s, c);
 		} while (!playerFinished);

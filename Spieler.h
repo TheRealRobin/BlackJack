@@ -11,13 +11,13 @@ public:
 	int bet_amount = 0;
 	//Wird true wenn das Spiel verlassen wird
 	bool quitsQame;
-	//Wird true wenn der Spieler überkauft hat (Mehr als 21 Punkte)
+	//Wird true wenn der Spieler Ã¼berkauft hat (Mehr als 21 Punkte)
 	bool over21 = false;
 	bool over21Split = false;
 	//Liste der Karten auf der Hand
 	vector<Karte> hand;
 	//Wird nur beim spielzug Split verwendet. Speichert die zweite Hand
-	//hasSplitHand ist true, wenn die zweite Hand bei der Punkteberechnung berücksichtigt werden soll.
+	//hasSplitHand ist true, wenn die zweite Hand bei der Punkteberechnung berÃ¼cksichtigt werden soll.
 	vector<Karte> splitHand;
 	bool hasSplitHand;
 	//Wenn false, dann ist der Spieler computergesteuert (der Casinodealer) und agiert dementsprechend
@@ -27,19 +27,19 @@ public:
 	//Zieht eine Karte
 	void drawCard();
 	void drawSplitCard();
-	//Gibt die Hand zurück
+	//Gibt die Hand zurÃ¼ck
 	vector<Karte> getHand() { return hand; }
 	//Deckt die Hand auf
 	void handAufdecken();
-	//Hand zusammenzählen
+	//Hand zusammenzÃ¤hlen
 	int getPunkte(vector<Karte> h);
-	//Die letzten Gewinne/Verluste des Spielers und der Rundenzähler
+	//Die letzten Gewinne/Verluste des Spielers und der RundenzÃ¤hler
 	vector<vector<int>> winHistory;
 	int runde;
-	//Startparameter für Spieler
+	//Startparameter fÃ¼r Spieler
 	Spieler(bool human) {
 		geldchips = 1000; //Startchips
 		isHuman = human; 
-		runde = 1; //Damit der Rundenzähler nicht bei 0 anfängt
+		runde = 1; //Damit der RundenzÃ¤hler nicht bei 0 anfÃ¤ngt
 	}
 };

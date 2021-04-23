@@ -2,9 +2,9 @@
 #include "Karte.h"
 #include <iostream>
 
-//Gibt dem Spieler 2 zufällige Karten (1 verdeckt beim Dealer); over21 speichert, ob der Spieler über 21 Punkte hat,
+//Gibt dem Spieler 2 zufÃ¤llige Karten (1 verdeckt beim Dealer); over21 speichert, ob der Spieler Ã¼ber 21 Punkte hat,
 //da er dann automatisch sofort verloren hat. Da startHand nur beim Anfang einer neuen Runde aufgerufen wird,
-//kann man over21 hier zurücksetzen:
+//kann man over21 hier zurÃ¼cksetzen:
 inline void Spieler::startHand() {
 	over21 = false;
 	over21Split = false;
@@ -29,7 +29,7 @@ inline void Spieler::drawCard() {
 	Karte k = Karte();
 	hand.push_back(k);
 }
-//Macht dasselbe für die zweite Hand
+//Macht dasselbe fÃ¼r die zweite Hand
 inline void Spieler::drawSplitCard() {
 	Karte k = Karte();
 	splitHand.push_back(k);
@@ -42,10 +42,10 @@ inline void Spieler::handAufdecken() {
 	}
 }
 
-//Zählt die Punkte auf einer gegebenen Hand zusammen, mit Rücksicht auf die Ass = (11 oder 1) Regel
+//ZÃ¤hlt die Punkte auf einer gegebenen Hand zusammen, mit RÃ¼cksicht auf die Ass = (11 oder 1) Regel
 inline int Spieler::getPunkte(vector<Karte> h) {
 	int total = 0;
-	int aces = 0; //Zählt die Asse, um später möglicherweise die Punktzahl anzupassen
+	int aces = 0; //ZÃ¤hlt die Asse, um spÃ¤ter mÃ¶glicherweise die Punktzahl anzupassen
 	for (int i = 0; i < h.size(); i++) {
 		string z = h.at(i).getZeichen();
 		if (z == "Zwei  ") { total += 2; }
@@ -62,7 +62,7 @@ inline int Spieler::getPunkte(vector<Karte> h) {
 		else if (z == "Koenig") { total += 10; }
 		else if (z == "Ass   ") { total += 11; aces++; }
 	}
-	if (total > 21 && aces > 0) { //Prüft, ob Anzahl angepasst werden muss, manche Asse müssen als 1 gezählt werden
+	if (total > 21 && aces > 0) { //PrÃ¼ft, ob Anzahl angepasst werden muss, manche Asse mÃ¼ssen als 1 gezÃ¤hlt werden
 		for (int i = 0; i < h.size(); i++) {
 			if (h.at(i).getZeichen() == "Ass   ") {
 				total -= 11;
