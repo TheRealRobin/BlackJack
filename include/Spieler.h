@@ -10,7 +10,7 @@ public:
 	int geldchips;
 	int bet_amount = 0;
 	//Wird true wenn das Spiel verlassen wird
-	bool quitsQame;
+	bool quitsQame = false;
 	//Wird true wenn der Spieler überkauft hat (Mehr als 21 Punkte)
 	bool over21 = false;
 	bool over21Split = false;

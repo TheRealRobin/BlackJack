@@ -5,7 +5,7 @@
 //Gibt dem Spieler 2 zufällige Karten (1 verdeckt beim Dealer); over21 speichert, ob der Spieler über 21 Punkte hat,
 //da er dann automatisch sofort verloren hat. Da startHand nur beim Anfang einer neuen Runde aufgerufen wird,
 //kann man over21 hier zurücksetzen:
-inline void Spieler::startHand() {
+void Spieler::startHand() {
 	over21 = false;
 	over21Split = false;
 	hasSplitHand = false;
@@ -25,17 +25,17 @@ inline void Spieler::startHand() {
 }
 
 //Zieht eine Karte und nimmt sie auf die Hand (unverdeckt)
-inline void Spieler::drawCard() {
+void Spieler::drawCard() {
 	Karte k = Karte();
 	hand.push_back(k);
 }
 //Macht dasselbe für die zweite Hand
-inline void Spieler::drawSplitCard() {
+void Spieler::drawSplitCard() {
 	Karte k = Karte();
 	splitHand.push_back(k);
 }
 //deckt alle Karten in einer Hand auf.
-inline void Spieler::handAufdecken() {
+void Spieler::handAufdecken() {
 	for (int i = 0; i < hand.size(); i++) {
 		hand.at(i).verdeckt = false;
 		//cout << "Karte aufgedeckt: " << i << "\n";
@@ -43,7 +43,7 @@ inline void Spieler::handAufdecken() {
 }
 
 //Zählt die Punkte auf einer gegebenen Hand zusammen, mit Rücksicht auf die Ass = (11 oder 1) Regel
-inline int Spieler::getPunkte(vector<Karte> h) {
+int Spieler::getPunkte(vector<Karte> h) {
 	int total = 0;
 	int aces = 0; //Zählt die Asse, um später möglicherweise die Punktzahl anzupassen
 	for (int i = 0; i < h.size(); i++) {
