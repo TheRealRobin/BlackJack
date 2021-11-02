@@ -1,7 +1,7 @@
 #include "Karte.h"
 #include "Spieler.h"
 #include <iostream>
-#include <Windows.h>
+#include <time.h>
 
 using namespace std;
 
@@ -14,6 +14,16 @@ enum PlayerMove {DRAW, DRAWSPLIT, HOLD, SPLIT, DOUBLEDOWN, SURRENDER, VIEWHIST};
 
 //Der minimale Wetteinsatz, kann nach belieben geändert werden, Spiel passt sich an
 const int minBet = 25;
+
+time_t tt0 {0};time_t tt1 {1};time_t tt2 {2};
+long n0 {0}; long n5 {500}; 
+const timespec time_500 = {tt0, n5};
+const timespec time_1500 = {tt1, n5};
+const timespec time_2000 = {tt2, n0};
+
+timespec t5 = {tt0, n5};
+timespec t15 = {tt1, n5};
+timespec t2 = {tt2, n0};
 
 //Schreibt die Hand eines gegebenen Spielers in die Konsole
 void printHand(Spieler s) {
@@ -52,11 +62,12 @@ void printHand(Spieler s) {
 	}
 }
 
+
 //Entscheidet basierend auf userinput, was der menschliche Spieler als nächstes tun wird.
 PlayerMove askForNextMove() {
 	bool redo = false;
 	char c = ' '; //d f h s x q v sind gültige chars
-	cout << "\n\nWas m\224chtest du tun?\nd -- Karte Ziehen\nf -- Karte Ziehen (Hand 2, nur bei Split)\nh -- Halten\ns -- Split(nur m\224glich bei doppelter Karte in Starthand; Deine beiden Karten werden nun als jeweils seprerate Hand gewertet, beide mit dem anf\204nglichen Einsatz.)\nx -- Verdoppeln (verdoppelt die Wette, zieht eine dritte Karte und beendet den Zug)\nv -- Letzte Gewinne / Verluste ansehen\nq -- Aufgeben (Beendet das Spiel)\n[d/f/h/s/x/q]:";
+	cout << "\n\nWas möchtest du tun?\nd -- Karte Ziehen\nf -- Karte Ziehen (Hand 2, nur bei Split)\nh -- Halten\ns -- Split(nur möglich bei doppelter Karte in Starthand; Deine beiden Karten werden nun als jeweils seprerate Hand gewertet, beide mit dem anfänglichen Einsatz.)\nx -- Verdoppeln (verdoppelt die Wette, zieht eine dritte Karte und beendet den Zug)\nv -- Letzte Gewinne / Verluste ansehen\nq -- Aufgeben (Beendet das Spiel)\n[d/f/h/s/x/q]:";
 	do {
 		if (!(cin >> c) || !(c=='d'||c=='f'||c=='h'||c=='s'||c=='x'||c=='q'||c=='v')) {
 			redo = true;
@@ -93,46 +104,49 @@ PlayerMove askForNextMove() {
 	else if (c == 'v') {
 		return VIEWHIST;
 	}
+	else {
+		throw runtime_error("something went very very wrong, this part of code should never ever be reachable....");
+	}
 }
 
 //Schreibt basierend auf GameState verschiedene Dinge in die Konsole
 //drawScreen kümmert sich sozusagen um den Textoutput der 
 void drawScreen(GameState state, Spieler s, Spieler c) {
-	system("cls"); //Screen clearen
+	system("clear"); //Screen clearen
 	switch (state) {
 	case INIT:
-		cout << "Willkommen bei BlackJack gegen den Computer. (Robin B\224hn, 2021))\n";
-		Sleep(2000);
+		cout << "Willkommen bei BlackJack gegen den Computer. (Robin Böhn, 2021))\n";
+		nanosleep(&time_2000, &t2);
 		break;
 	case BET:
-		cout << "Bitte w\204hle deinen Wetteinsatz.\n";
-		Sleep(1500);
+		cout << "Bitte wähle deinen Wetteinsatz.\n";
+		nanosleep(&time_1500, &t15);
 		break;
 	case DEAL:
-		cout << "Der aktuelle Wetteinsatz betr\204gt " << s.bet_amount << " Chips.\n"; 
-		cout << "Die Karten wurden folgenderma\341en verteit:\n";
-		Sleep(500);
+		cout << "Der aktuelle Wetteinsatz beträgt " << s.bet_amount << " Chips.\n"; 
+		cout << "Die Karten wurden folgendermaßen verteit:\n";
+		nanosleep(&time_500, &t5);
 		printHand(c);
-		Sleep(500);
+		nanosleep(&time_500, &t5);
 		printHand(s);
 		break;
 	case NEXTMOVE:
-		cout << "Der aktuelle Wetteinsatz betr\204gt " << s.bet_amount << " Chips.\n";
-		cout << "Die Karten wurden folgenderma\341en verteit:\n";
+		cout << "Der aktuelle Wetteinsatz beträgt " << s.bet_amount << " Chips.\n";
+		cout << "Die Karten wurden folgendermaßen verteit:\n";
 		printHand(c);
 		printHand(s);
 		break;
 	case PAYOUT:
-		if (!s.hasSplitHand) { cout << "Der aktuelle Wetteinsatz betr\204gt " << s.bet_amount << " Chips.\n"; }
-		if (s.hasSplitHand) { cout << "Der aktuelle Wetteinsatz betr\204gt " << s.bet_amount*2 << " Chips.\n"; }
+		if (!s.hasSplitHand) { cout << "Der aktuelle Wetteinsatz beträgt " << s.bet_amount << " Chips.\n"; }
+		if (s.hasSplitHand) { cout << "Der aktuelle Wetteinsatz beträgt " << s.bet_amount*2 << " Chips.\n"; }
 		cout << "Dealer spielt:\n";
 		printHand(c);
 		printHand(s);
-		Sleep(500);
+		nanosleep(&time_500, &t5);
 		break;
 	case QUIT:
 		cout << "Bitte warte, bis das Programm sich beendet........";
-		Sleep(500);
+		nanosleep(&time_500, &t5);
 		break;
 	default:
 		break;
@@ -144,14 +158,14 @@ int askForBetAmount(Spieler s) {
 	int amount;
 	bool redo;
 	do {
-		system("cls");
+		system("clear");
 		if (s.geldchips < minBet) {
-			cout << "Du hast nicht mehr genug Chips, um weiterzuspielen! Du hast" << s.geldchips << " von den n\224tigen" << minBet << " Chips. ";
+			cout << "Du hast nicht mehr genug Chips, um weiterzuspielen! Du hast " << s.geldchips << " von den nötigen " << minBet << " Chips. ";
 			redo = false;
 			return -99;
 		}
-		cout << "Der Minimaleinsatz betr\204gt " << minBet <<" Chips. Du hast aktuell noch "
-			<< s.geldchips << " Chips.\nBei Gewinn wird im Verh\204ltnis 1:1 ausgezahlt, bei einem natural Black Jack 3:2.\n"
+		cout << "Der Minimaleinsatz beträgt " << minBet <<" Chips. Du hast aktuell noch "
+			<< s.geldchips << " Chips.\nBei Gewinn wird im Verhältnis 1:1 ausgezahlt, bei einem natural Black Jack 3:2.\n"
 			<< "Wetteinsatz eingeben [" << minBet << "-" << s.geldchips << "]:";
 		redo = false;
 		//Userinput testen, ob eingabe eine Zahl zw. dem minimum und den verbleibenden geldchips ist.
@@ -161,7 +175,7 @@ int askForBetAmount(Spieler s) {
 			cin.ignore(10000, '\n');
 		}
 	} while (redo);
-	cout << "Der Einsatz diese Runde betr\204gt " << amount << " Chips.\n";
+	cout << "Der Einsatz diese Runde beträgt " << amount << " Chips.\n";
 	return amount;
 };
 
@@ -172,17 +186,17 @@ bool doMove(Spieler &s, PlayerMove next) {
 	bool playerFinished = false; //Wenn true, ist der letzte Spielzug abgeschlossen und die PAYOUT-Phase beginnt
 	if (next == DRAW) {//Zieht eine Karte und prüft, ob überkauft wurde
 		s.drawCard();
-		if (s.getPunkte(s.hand) > 21 && !s.hasSplitHand) { playerFinished = true; s.over21 = true; cout << "\nLeider \232berkauft!"; }
+		if (s.getPunkte(s.hand) > 21 && !s.hasSplitHand) { playerFinished = true; s.over21 = true; cout << "\nLeider Überkauft!"; }
 		if (s.getPunkte(s.hand) > 21 && s.hasSplitHand) {
 			playerFinished = false;
 			s.over21 = true;
-			cout << "\nLeider \232berkauft!";
+			cout << "\nLeider Überkauft!";
 			if (s.getPunkte(s.splitHand) > 21) { playerFinished = true; }
 		}
 		else {
 			cout << "\nEine Karte gezogen (Hand 1).";
 		}
-		Sleep(2000);
+		nanosleep(&time_2000, &t2);
 	}
 	if (next == DRAWSPLIT) {//Macht das gleiche für Hand 2, falls Split aktiv ist.
 		if (s.hasSplitHand && (s.getPunkte(s.splitHand) < 21)) {
@@ -190,7 +204,7 @@ bool doMove(Spieler &s, PlayerMove next) {
 			if (s.getPunkte(s.splitHand) > 21) {
 				playerFinished = false;
 				s.over21Split = true;
-				cout << "\nLeider \232berkauft (Split Hand)!";
+				cout << "\nLeider Überkauft (Split Hand)!";
 				if (s.getPunkte(s.hand) > 21) { playerFinished = true; }
 			}
 			else {
@@ -201,12 +215,12 @@ bool doMove(Spieler &s, PlayerMove next) {
 			cout << "\nKann nur bei aktivem Split funktionieren.";
 			playerFinished = false;
 		}
-		Sleep(2000);
+		nanosleep(&time_2000, &t2);
 	}
 	if (next == HOLD) {//Macht nichts und beendet die Runde
 		playerFinished = true;
 		cout << "\nKarten werden gehalten.";
-		Sleep(2000);
+		nanosleep(&time_2000, &t2);
 	}
 	if (next == SPLIT) {//Splittet die Karten der Hand in die zweite Hand und aktiviert Split
 		//Split kann nur aktiv werden, wenn der Spieler genug Geld hat und ein Paar hat und noch keine Karte gezogen hat
@@ -217,40 +231,40 @@ bool doMove(Spieler &s, PlayerMove next) {
 			cout << "\nKarten gesplittet.";
 		}
 		else {
-			cout << "\nSplitten ist zur Zeit nicht m\224glich.";
+			cout << "\nSplitten ist zur Zeit nicht möglich.";
 			playerFinished = false;
 		}
-		Sleep(2000);
+		nanosleep(&time_2000, &t2);
 	}
 	if (next == DOUBLEDOWN) {//Verdoppelt Einsatz, zieht eine Karte, beendet Zug
 		if (!s.hasSplitHand) {
 			if (s.geldchips >= s.bet_amount * 2) {
 				s.drawCard();
-				if (s.getPunkte(s.hand) > 21) { s.over21 = true; cout << "\nLeider \232berkauft!"; }
+				if (s.getPunkte(s.hand) > 21) { s.over21 = true; cout << "\nLeider Überkauft!"; }
 				s.bet_amount *= 2;
 				playerFinished = true;
 				cout << "\nLetzte Karte gezogen, Wette verdoppelt";
 			}
 			else {
 				playerFinished = false;
-				cout << "\nNicht gen\201gend Chips verbleibend.";
+				cout << "\nNicht genügend Chips verbleibend.";
 			}
 		}
 		else {
-			cout << "\nNur m\224glich wenn kein Split vorliegt.";
+			cout << "\nNur möglich wenn kein Split vorliegt.";
 			playerFinished = false;
 		}
-		Sleep(2000);
+		nanosleep(&time_2000, &t2);
 	}
 	if (next == SURRENDER) {//Programm wird zum stoppen vorbereitet
 		cout << "Spiel wird verlassen.........";
 		s.bet_amount = 0;
 		s.quitsQame = true;
 		playerFinished = true;
-		Sleep(1500);
+		nanosleep(&time_1500, &t15);
 	}
 	if (next == VIEWHIST) {//Zeigt den Spielverlauf in Runden an (Runde n, Gewinn/Verlust: +-i)
-		system("cls");
+		system("clear");
 		for (int i = 0; i < s.winHistory.size(); i++) {
 			cout << "Runde " << s.winHistory.at(i).at(0) << ", Gewinn/Verlust:" << s.winHistory.at(i).at(1) << endl;
 		}
@@ -268,81 +282,81 @@ void determineResult(Spieler& s, Spieler& c) {
 	int splitpunkte = s.getPunkte(s.splitHand);
 	//Spieler überkauft
 	if (s.over21) {
-		cout << "\nVerloren. Du bekommst deinen Einsatz von " << s.bet_amount << " Chips nicht zur\201ck.";
+		cout << "\nVerloren. Du bekommst deinen Einsatz von " << s.bet_amount << " Chips nicht zurück.";
 		s.geldchips -= s.bet_amount;
 		s.winHistory.push_back({s.runde, -s.bet_amount});
-		Sleep(2000);
+		nanosleep(&time_2000, &t2);
 	}
 	//Spieler hat 21 und dealer nicht (Natural)
 	else if (cpunkte != 21 && spunkte == 21) {
-		cout << "\nDu hast " << (int)(s.bet_amount * 1.5) << " Chips GEWONNEN! Du bekommst deinen Einsatz im Verh\204ltnis 3:2 zur\201ck.";
+		cout << "\nDu hast " << (int)(s.bet_amount * 1.5) << " Chips GEWONNEN! Du bekommst deinen Einsatz im Verhältnis 3:2 zurück.";
 		s.geldchips += (int)(s.bet_amount * 1.5);
 		s.winHistory.push_back({ s.runde, (int)(s.bet_amount*1.5) });
-		Sleep(2000);
+		nanosleep(&time_2000, &t2);
 	}
 	//Spieler unter 21 aber Dealer überkauft
 	else if (cpunkte > 21 && spunkte < 21) {
-		cout << "\nDu hast " << s.bet_amount << " Chips GEWONNEN! Du bekommst deinen Einsatz im Verh\204ltnis 1:1 zur\201ck.";
+		cout << "\nDu hast " << s.bet_amount << " Chips GEWONNEN! Du bekommst deinen Einsatz im Verhältnis 1:1 zurück.";
 		s.geldchips += s.bet_amount;
 		s.winHistory.push_back({ s.runde, s.bet_amount });
-		Sleep(2000);
+		nanosleep(&time_2000, &t2);
 	}
 	//Spieler unter 21 aber mehr als Dealer
 	else if (spunkte < 21 && (spunkte > cpunkte)) {
-		cout << "\nDu hast " << s.bet_amount << " Chips GEWONNEN! Du bekommst deinen Einsatz im Verh\204ltnis 1:1 zur\201ck.";
+		cout << "\nDu hast " << s.bet_amount << " Chips GEWONNEN! Du bekommst deinen Einsatz im Verhältnis 1:1 zurück.";
 		s.geldchips += s.bet_amount;
 		s.winHistory.push_back({ s.runde, s.bet_amount });
-		Sleep(2000);
+		nanosleep(&time_2000, &t2);
 	}
 	//Dealer gleicht Spieler
 	else if (cpunkte == spunkte && !s.over21) {
-		cout << "\nUnentschieden. Du beh\204lst deine Chips und hast noch " << s.geldchips << ".";
+		cout << "\nUnentschieden. Du behälst deine Chips und hast noch " << s.geldchips << ".";
 		s.winHistory.push_back({ s.runde, 0 });
-		Sleep(2000);
+		nanosleep(&time_2000, &t2);
 	}
 	//Spieler hat weniger als 21 und weniger als Dealer
 	else if (spunkte < 21 && (spunkte < cpunkte)) {
-		cout << "\nVerloren. Du bekommst deinen Einsatz von " << s.bet_amount << " Chips nicht zur\201ck.";
+		cout << "\nVerloren. Du bekommst deinen Einsatz von " << s.bet_amount << " Chips nicht zurück.";
 		s.geldchips -= s.bet_amount;
 		s.winHistory.push_back({ s.runde, -s.bet_amount });
-		Sleep(2000);
+		nanosleep(&time_2000, &t2);
 	}
 	//Alle oberen nochmal, aber für die zweite Hand falls vorher gesplittet wurde.
 	if (s.hasSplitHand) {
 		if (s.over21Split) {
-			cout << "\n(Split) Verloren. Du bekommst deinen Einsatz von " << s.bet_amount << " Chips nicht zur\201ck.";
+			cout << "\n(Split) Verloren. Du bekommst deinen Einsatz von " << s.bet_amount << " Chips nicht zurück.";
 			s.geldchips -= s.bet_amount;
 			s.winHistory.push_back({ s.runde, -s.bet_amount });
-			Sleep(2000);
+			nanosleep(&time_2000, &t2);
 		}
 		else if (cpunkte != 21 && splitpunkte == 21) {
-			cout << "\n(Split) Du hast " << (int)(s.bet_amount * 1.5) << " Chips GEWONNEN! Du bekommst deinen Einsatz im Verh\204ltnis 3:2 zur\201ck.";
+			cout << "\n(Split) Du hast " << (int)(s.bet_amount * 1.5) << " Chips GEWONNEN! Du bekommst deinen Einsatz im Verhältnis 3:2 zurück.";
 			s.geldchips += (int)(s.bet_amount * 1.5);
 			s.winHistory.push_back({ s.runde, (int) (s.bet_amount *1.5) });
-			Sleep(2000);
+			nanosleep(&time_2000, &t2);
 		}
 		else if (cpunkte > 21 && splitpunkte < 21) {
-			cout << "\n(Split) Du hast " << s.bet_amount << " Chips GEWONNEN! Du bekommst deinen Einsatz im Verh\204ltnis 1:1 zur\201ck.";
+			cout << "\n(Split) Du hast " << s.bet_amount << " Chips GEWONNEN! Du bekommst deinen Einsatz im Verhältnis 1:1 zurück.";
 			s.geldchips += s.bet_amount;
 			s.winHistory.push_back({ s.runde, s.bet_amount });
-			Sleep(2000);
+			nanosleep(&time_2000, &t2);
 		}
 		else if (splitpunkte < 21 && (splitpunkte > cpunkte)) {
-			cout << "\n(Split) Du hast " << s.bet_amount << " Chips GEWONNEN! Du bekommst deinen Einsatz im Verh\204ltnis 1:1 zur\201ck.";
+			cout << "\n(Split) Du hast " << s.bet_amount << " Chips GEWONNEN! Du bekommst deinen Einsatz im Verhältnis 1:1 zurück.";
 			s.geldchips += s.bet_amount;
 			s.winHistory.push_back({ s.runde, s.bet_amount });
-			Sleep(2000);
+			nanosleep(&time_2000, &t2);
 		}
 		else if (cpunkte == splitpunkte && !s.over21Split) {
-			cout << "\n(Split) Unentschieden. Du beh\204lst deine Chips und hast noch " << s.geldchips << ".";
+			cout << "\n(Split) Unentschieden. Du behälst deine Chips und hast noch " << s.geldchips << ".";
 			s.winHistory.push_back({ s.runde, 0 });
-			Sleep(2000);
+			nanosleep(&time_2000, &t2);
 		}
 		else if (splitpunkte < 21 && (splitpunkte < cpunkte)) {
-			cout << "\n(Split) Verloren. Du bekommst deinen Einsatz von " << s.bet_amount << " Chips nicht zur\201ck.";
+			cout << "\n(Split) Verloren. Du bekommst deinen Einsatz von " << s.bet_amount << " Chips nicht zurück.";
 			s.geldchips -= s.bet_amount;
 			s.winHistory.push_back({ s.runde, -s.bet_amount });
-			Sleep(2000);
+			nanosleep(&time_2000, &t2);
 		}
 	}
 }
@@ -360,7 +374,7 @@ int main() {
 		state = BET;
 		drawScreen(state, s, c);
 		s.bet_amount = askForBetAmount(s);
-		Sleep(1500);
+		nanosleep(&time_1500, &t15);
 		//DEAL Alle bekommen ihre Starthand, Dealer hat 1 verdeckte, Spieler alle offen
 		state = DEAL;
 		s.startHand(); //Beide bekommen ihre Anfangskarten
@@ -409,12 +423,12 @@ int main() {
 		} while (redo);//Ignoriert invalide usereingabe
 	}
 	cout << "Spiel wird beendet........";
-	Sleep(1500);
+	nanosleep(&time_1500, &t15);
 	return 0;
 	}
 	catch (const runtime_error& err) {
 		cout << err.what();
-		Sleep(1500);
+		nanosleep(&time_1500, &t15);
 		return 0;
 	}
 }
