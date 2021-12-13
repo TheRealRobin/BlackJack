@@ -146,7 +146,7 @@ int askForBetAmount(Spieler s) {
 	do {
 		system("cls");
 		if (s.geldchips < minBet) {
-			cout << "Du hast nicht mehr genug Chips, um weiterzuspielen! Du hast" << s.geldchips << " von den n\224tigen" << minBet << " Chips. ";
+			cout << "Du hast nicht mehr genug Chips, um weiterzuspielen! Du hast " << s.geldchips << " von den n\224tigen " << minBet << " Chips. ";
 			redo = false;
 			return -99;
 		}
